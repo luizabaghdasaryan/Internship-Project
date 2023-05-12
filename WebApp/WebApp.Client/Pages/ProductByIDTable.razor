@@ -1,0 +1,43 @@
+﻿@using WebApp.Shared.Models;
+@inject IModalService modal
+
+@if (product == null)
+{
+    <p align="center"><strong>Product with the entered ID not found in the selected category</strong></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@product.ID</td>
+                <td>@product.Name</td>
+                <td>@product.Brand</td>
+                <td>@product.Category</td>
+                <td>
+                    <button class="btn" style="border-color:darkblue;border-width:2px" @onclick="@(()=>modal.Show<ProductDescription>("More Information"))"><span style="color:darkblue;font-weight:bolder;">View</span></button> &ensp;
+                    <AuthorizeView Roles="admin">
+                        <Authorized>
+                            <button class="btn" style="border-color:indigo;border-width:2px" @onclick="@(()=>modal.Show<EditProduct>($"Edit Product With ID: {product.ID}", new ModalParameters().Add(nameof(EditProduct.id), product.ID)))"><span style="color:indigo;font-weight:bolder;">Edit</span></button> &ensp;
+                            <button class="btn" style="border-color:darkred;border-width:2px" @onclick="@(()=>modal.Show<DeleteProduct>("Are you sure?", new ModalParameters().Add(nameof(EditProduct.id), product.ID)))"><span style="color:darkred;font-weight:bolder;">Delete</span></button>
+                        </Authorized>
+                    </AuthorizeView>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public Product? product { get; set; }
+}

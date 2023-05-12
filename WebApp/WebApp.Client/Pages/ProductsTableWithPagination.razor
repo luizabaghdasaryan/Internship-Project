@@ -1,0 +1,164 @@
+﻿@using WebApp.Shared.Models;
+@using WebApp.Client.Services;
+@inject IProductService productService
+@inject NavigationManager Navigation
+
+<ProductsTable products="@products" />
+
+@if(products != null && number_of_pages > 1)
+{
+    <div align="center">
+        <button style="background-color:darkblue" class="btn btn-primary" @onclick="@(async ()=> await Previous())">Previous</button> <span style="color:darkmagenta;font-weight:bolder;">&nbsp;Page @_page / @number_of_pages &nbsp;</span>
+        <button style="background-color:darkblue" class="btn btn-primary" @onclick="@(async ()=> await Next())">Next</button> <br><br>
+        <label for="topage"> <span style="color:darkmagenta;font-weight:bolder;">Enter page number:</span> </label>
+        <input id="topage" type="number" min="1" max="@number_of_pages" @oninput="@GoToPage" style="height:25px" />
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Product[]? products { get; set; }
+    [Parameter]
+    public bool search { get; set; } = false;
+    [Parameter]
+    public string category { get; set; }
+    [Parameter]
+    public string searchString { get; set; }
+    [Parameter]
+    public int number_of_pages { get; set; }
+    [Parameter]
+    public int _page { get; set; } = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(search)
+        {
+            number_of_pages = await productService.GetPageCountBySearch(searchString);
+            Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(new Dictionary<string, object?>
+                {
+                    ["page"] = (int?)_page,
+                    ["search"] = searchString
+                }));
+        }
+        else if (category == "All")
+        {
+            products = await productService.GoToPage(_page);
+            number_of_pages = await productService.GetPageCount();
+        }
+        else 
+        {
+            products = await productService.GoToPageByCategory(category, _page);
+            number_of_pages = await productService.GetPageCountByCategory(category);
+        }
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        await OnInitializedAsync();
+    }
+    private async Task Previous()
+    {
+        if (search)
+        {
+            products = await productService.GetPreviousBySearch(searchString);
+        }
+        else if (category == "All")
+        {
+            products = await productService.GetPrevious();
+        }
+        else
+        {
+            products = await productService.GetPreviousByCategory(category);
+        }
+        if (_page <= 1)
+        {
+            _page = 1;
+        }
+        else
+        {
+            _page -= 1;
+        }
+        NavigateTo(); 
+    }
+    private async Task Next()
+    {
+        if (search)
+        {
+            products = await productService.GetNextBySearch(searchString);
+        }
+        else if (category == "All")
+        {
+            products = await productService.GetNext();
+        }
+        else
+        {
+            products = await productService.GetNextByCategory(category);
+        }
+        if (_page >= number_of_pages)
+        {
+            _page = number_of_pages;
+        }
+        else
+        {
+            _page += 1;
+        }
+        NavigateTo();
+    }
+    private async Task GoToPage(ChangeEventArgs e)
+    {
+        if (string.IsNullOrEmpty($"{e.Value}"))
+        {
+            if (search)
+            {
+                products = await productService.GoToPageBySearch(searchString, _page);
+            }
+            else if (category == "All")
+            {
+                products = await productService.GoToPage(_page);
+            }
+            else
+            {
+                products = await productService.GoToPageByCategory(category, _page);
+            }
+        }
+        else
+        {
+            int page_to_go = int.Parse(e.Value.ToString());
+            if (page_to_go <= 0 || page_to_go > number_of_pages)
+            {
+                page_to_go = _page;
+            }
+            else
+            {
+                _page = page_to_go;
+            }
+            if (search)
+            {
+                products = await productService.GoToPageBySearch(searchString, page_to_go);
+            }
+            else if (category == "All")
+            {
+                products = await productService.GoToPage(page_to_go);
+            }
+            else
+            {
+                products = await productService.GoToPageByCategory(category, page_to_go);
+            }
+            NavigateTo();
+        }
+    }
+    private void NavigateTo()
+    {
+        if (search)
+        {
+            Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(new Dictionary<string, object?>
+                {
+                    ["page"] = (int?)_page,
+                    ["search"] = searchString
+                }));
+        }
+        else
+        {
+            Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("page", _page));
+        }
+    }
+}

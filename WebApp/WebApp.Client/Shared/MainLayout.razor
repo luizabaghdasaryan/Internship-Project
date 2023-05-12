@@ -1,0 +1,32 @@
+﻿@using WebApp.Client.Pages;
+@using WebApp.Client.Services;
+@inherits LayoutComponentBase
+@inject IUserService userService
+@inject IModalService modal
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            
+            <AuthorizeView>
+                <Authorized>
+                    <p style="float:right;margin-top:14px;">@context.User.Identity?.Name</p> &emsp;
+                    <p><button style="float:right;margin-top:15px;background-color:darkblue" class="btn btn-primary" @onclick="userService.LogOutAndRemoveToken"><span style="font-weight:bold">Log Out</span></button></p>
+                </Authorized>
+                <NotAuthorized>
+                    <p><button style="float:right;margin-top:15px;background-color:darkblue;font-weight:bold" class="btn btn-primary" @onclick="@(()=>modal.Show<LogIn>())">Log In</button></p> &emsp;&nbsp;
+                    <p><button style="float:right;margin-top:15px;background-color:darkmagenta;font-weight:bold" class="btn btn-primary" @onclick="@(()=>modal.Show<SignUp>())">Sign Up</button></p>
+                </NotAuthorized>
+            </AuthorizeView>
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            
+        </div>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>

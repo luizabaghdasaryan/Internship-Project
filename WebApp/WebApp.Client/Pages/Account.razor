@@ -1,0 +1,20 @@
+﻿@page "/Account"
+@using WebApp.Client.Services;
+@using System.Security.Claims;
+
+<PageTitle>Account</PageTitle>
+<AuthorizeView>
+    <Authorized>
+        <br>
+        <p><h5><strong>Personal data</strong></h5></p>
+        <p><b>Name:</b>  @context.User.FindFirstValue(ClaimTypes.Name)</p>
+        <p><b>Email:</b>  @context.User.FindFirstValue(ClaimTypes.Email)</p>
+    </Authorized>
+    <NotAuthorized>
+        <br /><br /> <br />
+        <h3 align="center">Log In Or Sign Up</h3>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+}

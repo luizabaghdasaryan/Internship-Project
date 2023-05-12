@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "BlazorApp11.Shared": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:61136;http://localhost:61137"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+﻿@page "/"
+@using WebApp.Shared.Models;
+@using WebApp.Client.Services;
+@using WebApp.Client.Pages;
+@inject IProductService productService
+@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+<PageTitle>HomePage</PageTitle>
+<p><h3 align="center">Skincare Products</h3></p>
+<FilterAndCreateElements selectedCategory="@selectedCategory" _page="@_page" />
+
+@code {
+    private string selectedCategory = "All";
+    [Parameter]
+    public int _page { get; set; } = 1;
+}
+
+<SurveyPrompt Title="How is Blazor working for you?" />

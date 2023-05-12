@@ -1,0 +1,157 @@
+﻿@using WebApp.Client.Services;
+@using WebApp.Shared.Models;
+@using WebApp.Client.Pages;
+@inject IProductService productService
+@inject NavigationManager Navigation
+@inject IModalService modal
+@inject ISessionStorageService storage
+
+<br /><label for="categories"><span style="color:darkblue;font-weight:bold;font-size:large">Select a category:</span></label>
+<select name="categories" @onchange="ToSelectedCategory" style="width:70px;height:25px">
+    <option>@selectedCategory</option>
+    @if (categories != null)
+    {
+        @foreach (var category in categories)
+        {
+            @if (category != selectedCategory)
+            {
+                <option value=@category>@category</option>
+            }
+        }
+        @if (selectedCategory != "All")
+        {
+            <option>All</option>
+        }
+    }
+</select>
+
+&nbsp;<label for="byid">&nbsp;&nbsp; <span style="color:darkmagenta;font-weight:bold;font-size:large">Enter Product ID:</span></label>
+<input id="byid" type="number" @oninput="GetByID" min="1" style="width:70px;height:25px" />&emsp;
+
+<input type="text" placeholder="Search..." style="width:200px;height:25px" @onkeyup="Enter" @bind-value="@searchString" />
+<button class="oi oi-magnifying-glass" style="height:25px;background-color:white;border:none;" @onclick="( async() => await Search(searchString))"></button>
+
+<button style="float: right;background-color:indigo;font-weight:bold;font-size:medium;" class="btn btn-primary" @onclick="@(async ()=> await Add())">Create New</button>
+<br />
+<br />
+
+@if (product_by_id)
+{
+    <ProductByIDTable product="@product" />
+}
+else if (search)
+{
+    <ProductsTableWithPagination products="@found_products" search="true" searchString="@searchString" number_of_pages="@number_of_pages" />
+}
+else
+{
+    <ProductsTableWithPagination search="false" category="@selectedCategory" _page="@_page" />
+}
+
+@code {
+    [Parameter]
+    public string selectedCategory { get; set; }
+    [Parameter]
+    public Product[]? products { get; set; }
+    [Parameter]
+    public int _page { get; set; }
+    [Parameter]
+    public int number_of_pages { get; set; }
+    private Product? product;
+    private Product[]? found_products;
+    private string searchString;
+    private string[]? categories;
+    private bool product_by_id = false;
+    private bool search = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await productService.GetCategories();
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        await OnInitializedAsync();
+    }
+    void ToSelectedCategory(ChangeEventArgs e)
+    {
+        string selectedCategory = e.Value.ToString();
+        if (categories.Contains(selectedCategory))
+        {
+            Navigation.NavigateTo($"/ByCategory/{selectedCategory}");
+        }
+        else
+        {
+            Navigation.NavigateTo("/");
+        }
+    }
+    private async Task GetByID(ChangeEventArgs e)
+    {
+        string id = $"{e.Value}";
+        if (string.IsNullOrEmpty(id))
+        {
+            product_by_id = false;
+            Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(
+                new Dictionary<string, object?>
+                    {
+                        ["id"] = null,
+                        ["page"] = 1,
+                    }));
+        }
+        else
+        {
+            product_by_id = true;
+            search = false;
+            product = await productService.GetProductByID(id);
+            if (product != null && selectedCategory != "All" && product.Category != selectedCategory)
+            {
+                product = null;
+            }
+            Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(
+                new Dictionary<string, object?>
+                    {
+                        ["search"] = null,
+                        ["page"] = null,
+                        ["id"] = id
+                    }));
+        }
+    }
+    private async Task Search(string searchTerm)
+    {
+        if (string.IsNullOrEmpty(searchTerm) || string.IsNullOrWhiteSpace(searchTerm))
+        {
+            search = false;
+            Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(
+                new Dictionary<string, object?>
+                    {
+                        ["search"] = null,
+                        ["page"] = 1,
+                    }));
+        }
+        else
+        {
+            search = true;
+            product_by_id = false;
+            found_products = await productService.GoToPageBySearch(searchString, 1);
+            number_of_pages = await productService.GetPageCountBySearch(searchString);
+        }
+    }
+    public async Task Enter(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await Search(searchString);
+        }
+    }
+    private async Task Add()
+    {
+        var token = await storage.GetItemAsStringAsync("accessToken");
+        if (token == null)
+        {
+            modal.Show<LogIn>("Please log in or register to continue");
+        }
+        else
+        {
+            modal.Show<AddProduct>();
+        }
+    }
+}

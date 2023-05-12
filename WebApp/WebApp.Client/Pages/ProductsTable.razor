@@ -1,0 +1,48 @@
+﻿@page "/products"
+@using WebApp.Client.Services;
+@using WebApp.Shared.Models;
+@inject IModalService modal
+
+@if (products == null)
+{
+    <p align="center"><strong>No Products</strong></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.ID</td>
+                    <td>@product.Name</td>
+                    <td>@product.Brand</td>
+                    <td>@product.Category</td>
+                    <td>
+                        <button class="btn" style="border-color:darkblue;border-width:2px;font-weight:bolder;color:darkblue;" @onclick="@(()=>modal.Show<ProductDescription>("More Information"))">View</button> &ensp;
+                        <AuthorizeView Roles="admin">
+                            <Authorized>
+                                <button class="btn" style="border-color:indigo;border-width:2px;font-weight:bolder;color:indigo;" @onclick="@(()=>modal.Show<EditProduct>($"Edit Product With ID: {product.ID}", new ModalParameters().Add(nameof(EditProduct.id), product.ID)))">Edit</button> &ensp;
+                                <button class="btn" style="border-color:darkred;border-width:2px;font-weight:bolder;color:darkred;" @onclick="@(()=>modal.Show<DeleteProduct>("Are you sure?", new ModalParameters().Add(nameof(EditProduct.id), product.ID)))">Delete</button>
+                            </Authorized>
+                        </AuthorizeView>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code{
+    [Parameter]
+    public Product[]? products { get; set; }
+}

@@ -1,0 +1,14 @@
+﻿@using WebApp.Client.Services;
+@using WebApp.Shared.Models;
+@inject IProductService productService
+
+<FilterAndCreateElements selectedCategory="@category" _page="@_page" />
+
+@code {
+    [Parameter]
+    public string category { get; set; }
+    [Parameter]
+    public int _page { get; set; } = 1;
+}
+
+<SurveyPrompt Title="How is Blazor working for you?" />

@@ -1,0 +1,60 @@
+﻿@page "/CreateNew"
+@using WebApp.Client.Services;
+@using WebApp.Shared.Models
+@using System.ComponentModel.DataAnnotations
+@using WebApp.Client.Pages
+@inject IProductService productService
+@attribute [Authorize]
+
+<PageTitle>Add new product</PageTitle>
+<h2 align="center" style="font-weight:bold;">Add new product</h2>
+<EditForm Model="@product" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <p>
+        <div class="col-sm-2">
+            <label for="category">Category:</label>
+            <InputSelect id="category" @bind-Value=product.Category class="form-control">
+                @if (categories != null)
+                {
+                    @foreach (var category in categories)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="() => product.Category" />
+        </div>
+    </p>
+    <p>
+        <label for="name">Name:</label>
+        <InputText id="name" @bind-Value="product.Name" class="form-control" />
+        <ValidationMessage For="() => product.Name" />
+    </p>
+    <p>
+        <label for="brand">Brand:</label>
+        <InputText id="brand" @bind-Value="product.Brand" class="form-control" />
+        <ValidationMessage For="() => product.Brand" />
+    </p>
+    <button type="submit" style="background-color:indigo;" class=" btn btn-primary"><span style="font-weight:bold;font-size:medium;">Create</span></button>
+</EditForm>
+
+@if (isCreated)
+{
+    <p>Product Created Successsfully</p>
+}
+
+@code {
+    public int id { get; set; }
+    private string[]? categories;
+    private Product product = new Product();
+    private bool isCreated;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await productService.GetCategories();
+    }
+    private async Task HandleValidSubmit()
+    {
+       isCreated =  await productService.AddProduct(product);
+    }
+}

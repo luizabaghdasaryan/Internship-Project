@@ -1,0 +1,66 @@
+﻿@using WebApp.Client.Services;
+@using WebApp.Shared.Models;
+@inject IProductService productService
+@inject HttpClient httpClient
+
+<EditForm Model="@product" OnValidSubmit="Submit">
+    <DataAnnotationsValidator />
+    <p>
+        <div class="col-sm-2">
+            <label for="category">Category:</label>
+            <InputSelect id="category" @bind-Value=product.Category class="form-control">
+                @if (categories != null)
+                {
+                    @foreach (var category in categories)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="() => product.Category" />
+        </div>
+    </p>
+    <p>
+        <label for="name">Name:</label>
+        <InputText id="name" @bind-Value="product.Name" class="form-control" />
+        <ValidationMessage For="() => product.Name" />
+    </p>
+    <p>
+        <label for="brand">Brand:</label>
+        <InputText id="brand" @bind-Value="product.Brand" class="form-control" />
+        <ValidationMessage For="() => product.Brand" />
+    </p>
+    <button type="submit" class="btn btn-primary" style="font-weight:bold;background-color:darkmagenta;">Update</button><br />
+</EditForm>
+<br />
+<p style="color:red;">@message</p>
+
+@code {
+    [Parameter] 
+    public int id { get; set; }
+    private string[]? categories;
+    private Product product = new Product();
+    private Product _product;
+    private string message = "";
+    private bool isUpdated = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await productService.GetCategories();
+        product = await productService.GetProductByID($"{id}");
+        _product = (Product)product!.Clone();
+    }
+    private async Task Submit()
+    {
+        if (product.Category == _product.Category && product.Name == _product.Name && product.Brand == _product.Brand)
+        {
+            message = "No changes were made to update";
+        }
+        else
+        {
+            isUpdated = await productService.EditProduct(product);
+            if(isUpdated)
+            message = "Product updated successfully";
+        }
+    }
+}

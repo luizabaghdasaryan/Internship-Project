@@ -1,0 +1,37 @@
+﻿@page "/delete"
+@using WebApp.Client.Services;
+@using WebApp.Shared.Models;
+@inject NavigationManager Navigation
+@inject IModalService modal
+@inject IProductService productService
+@attribute [Authorize]
+
+@if(!isDeleted)
+{
+    <h5>Do you want to delete product with ID: @id?</h5>
+    <br />
+    <div align="right">
+        <button style="color:darkblue;font-weight:bold" class="btn btn-link" @onclick="() => Return()">Cancel</button>
+        <button style="background-color:darkred;font-weight:bolder;border-color:darkred" class="btn btn-primary" @onclick="@(async ()=> await Delete(id))">Delete</button>
+    </div>
+}
+
+@if(isDeleted)
+{
+    <p>Product with ID: @id deleted successfully</p>
+}
+
+@code {
+    private Product? product;
+    [Parameter] 
+    public int id { get; set; }
+    private bool isDeleted = false;
+    private async Task Delete(int id)
+    {
+        isDeleted = await productService.DeleteProduct(id);
+    }
+    private void Return()
+    {
+        Navigation.NavigateTo(Navigation.Uri);
+    }
+}

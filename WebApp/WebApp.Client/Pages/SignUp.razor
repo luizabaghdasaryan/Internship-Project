@@ -1,0 +1,76 @@
+﻿@page "/signup"
+@using WebApp.Client.Services;
+@using WebApp.Shared.Models
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IModalService modal
+@inject IUserService userService
+
+<PageTitle>Sign Up</PageTitle>
+<h2 align="center" style="font-weight:bold;">Create an account</h2>
+<br />
+<EditForm Model="@user" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <div align="center">
+        <p>
+            <InputText id="fname" @bind-Value="user.FirstName" class="form-control" placeholder="First Name" />
+            <ValidationMessage For="() => user.FirstName" />
+        </p>
+        <p>
+            <InputText id="lname" @bind-Value="user.LastName" class="form-control" placeholder="Last Name" />
+            <ValidationMessage For="() => user.LastName" />
+        </p>
+        <p>
+            <InputText id="email" @bind-Value="user.Email" class="form-control" placeholder="Email" />
+            <ValidationMessage For="() => user.Email" />
+        </p>
+        <p>
+            <InputText id="uname" @bind-Value="user.UserName" class="form-control" placeholder="Username" />
+            <ValidationMessage For="() => user.UserName" />
+        </p>
+        <p>
+            <InputText id="password" @bind-Value="user.Password" type="password" class="form-control" placeholder="Password" />
+            <ValidationMessage For="() => user.Password" />
+        </p>
+        <p>
+            <InputText id="confirm" @bind-Value="user.ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password" />
+            <ValidationMessage For="() => user.ConfirmPassword" />
+        </p>
+        <p style="color:red;">@message</p>
+        <button type="submit" style="background-color:darkmagenta;width:50%;" class=" btn btn-primary"><span style="font-weight:bold;font-size:medium;">Sign Up</span></button>
+        <br />
+        <br />
+        <button class="btn btn-link"><span style="font-weight:bold;color:darkblue;" @onclick="@(()=>modal.Show<LogIn>())">I already have an account</span></button>
+    </div>
+</EditForm>
+
+@code {
+    private bool isSignedUp = false;
+    private RegisterUser user = new RegisterUser();
+    private string message = "";
+    private bool isRegistered = false;
+
+    private async Task HandleValidSubmit(EditContext editContext)
+    {
+        isSignedUp = true;
+        User _user = new User
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                UserName = user.UserName,
+                Password = user.Password
+            };
+        isRegistered = await userService.RegisteredAndTokenStored(_user);
+        if (isRegistered)
+        {
+            message = "Account created successfully";
+        }
+        else
+        {
+            message = "The email address you entered is already registered";
+        }
+    }
+}

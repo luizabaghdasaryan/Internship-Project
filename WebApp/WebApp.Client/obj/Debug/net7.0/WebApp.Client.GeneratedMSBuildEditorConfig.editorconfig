@@ -1,0 +1,101 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = WebApp.Client
+build_property.RootNamespace = WebApp.Client
+build_property.ProjectDir = C:\Users\Luiza\source\repos\WebApp.Client\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Luiza\source\repos\WebApp.Client
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/Account.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/AddProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkUHJvZHVjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/Body.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9keS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/DeleteProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGVsZXRlUHJvZHVjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/EditProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFByb2R1Y3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/Face.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmFjZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/FilterAndCreateElements.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmlsdGVyQW5kQ3JlYXRlRWxlbWVudHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/Hair.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSGFpci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/LogIn.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nSW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/ProductByIDTable.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdEJ5SURUYWJsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/ProductDescription.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdERlc2NyaXB0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/ProductsByCategory.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdHNCeUNhdGVnb3J5LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/ProductsTable.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdHNUYWJsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/ProductsTableWithPagination.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdHNUYWJsZVdpdGhQYWdpbmF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Pages/SignUp.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2lnblVwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-9fl1znh18g
+
+[C:/Users/Luiza/source/repos/WebApp.Client/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-q6hvf1gqcu
